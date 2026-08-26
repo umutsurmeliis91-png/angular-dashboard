@@ -1,0 +1,74 @@
+<div class="login-page">
+  <div class="login-page__panel">
+    <p-card styleClass="login-card">
+      <div class="login-card__brand">
+        <span class="login-card__logo">
+          <i class="pi pi-chart-bar"></i>
+        </span>
+        <h1>Angular Dashboard</h1>
+        <p>Devam etmek için hesabınıza giriş yapın</p>
+      </div>
+
+      @if (errorMessage(); as error) {
+        <p-message severity="error" styleClass="login-card__error">{{ error }}</p-message>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form" novalidate>
+        <div class="login-form__field">
+          <label for="username">Kullanıcı adı</label>
+          <input
+            id="username"
+            type="text"
+            pInputText
+            formControlName="username"
+            placeholder="admin"
+            autocomplete="username"
+            fluid
+          />
+          @if (form.controls.username.invalid && form.controls.username.touched) {
+            <small class="login-form__hint">Kullanıcı adı zorunludur.</small>
+          }
+        </div>
+
+        <div class="login-form__field">
+          <label for="password">Şifre</label>
+          <p-password
+            inputId="password"
+            formControlName="password"
+            placeholder="••••••••"
+            [feedback]="false"
+            [toggleMask]="true"
+            autocomplete="current-password"
+            fluid
+          />
+          @if (form.controls.password.invalid && form.controls.password.touched) {
+            <small class="login-form__hint">
+              Şifre zorunludur ve en az 6 karakter olmalıdır.
+            </small>
+          }
+        </div>
+
+        <div class="login-form__row">
+          <label class="login-form__checkbox">
+            <p-checkbox formControlName="rememberMe" [binary]="true" inputId="rememberMe" />
+            <span>Beni hatırla</span>
+          </label>
+        </div>
+
+        <p-button
+          type="submit"
+          label="Giriş Yap"
+          styleClass="login-form__submit"
+          [loading]="loading()"
+          [disabled]="form.invalid || loading()"
+          fluid
+        />
+      </form>
+
+      <div class="login-card__demo">
+        <i class="pi pi-info-circle"></i>
+        <span>Demo hesap: <strong>admin</strong> / <strong>admin123</strong></span>
+      </div>
+    </p-card>
+  </div>
+</div>

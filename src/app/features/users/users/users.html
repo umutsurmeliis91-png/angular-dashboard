@@ -1,0 +1,156 @@
+<div class="users">
+  <div class="users__intro">
+    <div>
+      <h1>Kullanıcılar</h1>
+      <p>Sistemdeki kullanıcıları görüntüleyin, ekleyin, düzenleyin veya silin.</p>
+    </div>
+    <button type="button" pButton class="users__add-btn" (click)="openCreateDialog()">
+      <i class="pi pi-plus"></i>
+      <span>Yeni Kullanıcı</span>
+    </button>
+  </div>
+
+  <div class="users__card">
+    <div class="users__toolbar">
+      <span class="users__search">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          pInputText
+          placeholder="Ada, kullanıcı adına veya e-postaya göre ara..."
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
+        />
+      </span>
+    </div>
+
+    <p-table
+      [value]="filteredUsers()"
+      [loading]="loading()"
+      [paginator]="filteredUsers().length > 10"
+      [rows]="10"
+      styleClass="p-datatable-sm"
+      dataKey="id"
+    >
+      <ng-template #header>
+        <tr>
+          <th>Kullanıcı</th>
+          <th>E-posta</th>
+          <th>Rol</th>
+          <th class="users__actions-col">İşlemler</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-user>
+        <tr>
+          <td>
+            <div class="users__user-cell">
+              <span class="users__avatar">{{ user.name.slice(0, 1) }}</span>
+              <div>
+                <div class="users__name">{{ user.name }}</div>
+                <div class="users__username">&#64;{{ user.username }}</div>
+              </div>
+            </div>
+          </td>
+          <td>{{ user.email }}</td>
+          <td>
+            <p-tag [value]="user.roles[0]" [severity]="roleSeverity(user.roles[0])" />
+          </td>
+          <td class="users__actions-col">
+            <button
+              type="button"
+              pButton
+              text
+              rounded
+              aria-label="Düzenle"
+              (click)="openEditDialog(user)"
+            >
+              <i class="pi pi-pencil"></i>
+            </button>
+            <button
+              type="button"
+              pButton
+              text
+              rounded
+              severity="danger"
+              aria-label="Sil"
+              (click)="confirmDelete(user)"
+            >
+              <i class="pi pi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="4" class="users__empty">
+            @if (searchTerm()) {
+              "{{ searchTerm() }}" ile eşleşen kullanıcı bulunamadı.
+            } @else {
+              Henüz kullanıcı yok.
+            }
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<p-dialog
+  [visible]="dialogVisible()"
+  (visibleChange)="dialogVisible.set($event)"
+  [modal]="true"
+  [style]="{ width: '460px' }"
+  [header]="editingUser() ? 'Kullanıcıyı Düzenle' : 'Yeni Kullanıcı'"
+>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="user-form" novalidate>
+    <div class="user-form__field">
+      <label for="user-username">Kullanıcı adı</label>
+      <input id="user-username" type="text" pInputText formControlName="username" fluid />
+      @if (form.controls.username.invalid && form.controls.username.touched) {
+        <small class="user-form__hint">Kullanıcı adı zorunludur.</small>
+      }
+    </div>
+
+    <div class="user-form__field">
+      <label for="user-name">Ad Soyad</label>
+      <input id="user-name" type="text" pInputText formControlName="name" fluid />
+      @if (form.controls.name.invalid && form.controls.name.touched) {
+        <small class="user-form__hint">Ad soyad zorunludur.</small>
+      }
+    </div>
+
+    <div class="user-form__field">
+      <label for="user-email">E-posta</label>
+      <input id="user-email" type="email" pInputText formControlName="email" fluid />
+      @if (form.controls.email.invalid && form.controls.email.touched) {
+        <small class="user-form__hint">Geçerli bir e-posta adresi girin.</small>
+      }
+    </div>
+
+    <div class="user-form__field">
+      <label for="user-role">Rol</label>
+      <p-select
+        inputId="user-role"
+        formControlName="role"
+        [options]="roleOptions"
+        appendTo="body"
+        fluid
+      />
+    </div>
+  </form>
+
+  <ng-template #footer>
+    <button type="button" pButton text severity="secondary" (click)="closeDialog()">Vazgeç</button>
+    <button
+      type="button"
+      pButton
+      [loading]="saving()"
+      [disabled]="form.invalid || saving()"
+      (click)="submit()"
+    >
+      {{ editingUser() ? 'Kaydet' : 'Ekle' }}
+    </button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmdialog />

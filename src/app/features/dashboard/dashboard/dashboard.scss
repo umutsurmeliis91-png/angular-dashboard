@@ -1,0 +1,111 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.dashboard__intro {
+  h1 {
+    margin: 0 0 0.2rem;
+    font-size: 1.5rem;
+    color: var(--app-text-primary);
+  }
+
+  p {
+    margin: 0;
+    color: var(--app-text-secondary);
+  }
+}
+
+.dashboard__kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.dashboard__charts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card {
+  background: var(--app-surface-card);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow-sm);
+  padding: 1.25rem;
+
+  h3 {
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--app-text-primary);
+  }
+}
+
+.chart-card--wide {
+  grid-column: span 1;
+}
+
+.chart-card__canvas {
+  height: 260px;
+  position: relative;
+}
+
+.dashboard__activity {
+  h3 {
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--app-text-primary);
+  }
+}
+
+.activity-table__user {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.activity-table__icon {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.activity-table__icon[data-accent='primary'] {
+  background: var(--p-primary-color);
+}
+.activity-table__icon[data-accent='success'] {
+  background: var(--app-success);
+}
+.activity-table__icon[data-accent='warning'] {
+  background: var(--app-warning);
+}
+.activity-table__icon[data-accent='danger'] {
+  background: var(--app-danger);
+}
+
+.activity-table__time-col {
+  color: var(--app-text-secondary);
+  white-space: nowrap;
+}
+
+.activity-table__empty {
+  text-align: center;
+  color: var(--app-text-secondary);
+  padding: 2rem 0;
+}

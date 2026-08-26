@@ -1,0 +1,134 @@
+.users {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.users__intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  h1 {
+    margin: 0 0 0.2rem;
+    font-size: 1.5rem;
+    color: var(--app-text-primary);
+  }
+
+  p {
+    margin: 0;
+    color: var(--app-text-secondary);
+  }
+}
+
+.users__add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.users__card {
+  background: var(--app-surface-card);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow-sm);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.users__toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.users__search {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+
+  i {
+    position: absolute;
+    top: 50%;
+    left: 0.75rem;
+    transform: translateY(-50%);
+    color: var(--app-text-secondary);
+    font-size: 0.85rem;
+  }
+
+  input {
+    width: 100%;
+    padding-left: 2.25rem;
+  }
+}
+
+.users__user-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.users__avatar {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.users__name {
+  font-weight: 600;
+  color: var(--app-text-primary);
+}
+
+.users__username {
+  font-size: 0.8rem;
+  color: var(--app-text-secondary);
+}
+
+.users__actions-col {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.users__empty {
+  text-align: center;
+  color: var(--app-text-secondary);
+  padding: 2rem 0;
+}
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.user-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--app-text-primary);
+  }
+}
+
+.user-form__hint {
+  color: var(--app-danger);
+  font-size: 0.78rem;
+}

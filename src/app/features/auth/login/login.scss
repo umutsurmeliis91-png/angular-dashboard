@@ -1,0 +1,124 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+}
+
+.login-page {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background:
+    radial-gradient(circle at 15% 20%, color-mix(in srgb, var(--p-primary-color) 18%, transparent), transparent 45%),
+    radial-gradient(circle at 85% 80%, color-mix(in srgb, var(--p-primary-color) 12%, transparent), transparent 45%),
+    var(--app-bg);
+}
+
+.login-page__panel {
+  width: 100%;
+  max-width: 420px;
+}
+
+:host ::ng-deep .login-card {
+  border-radius: 20px;
+  box-shadow: var(--app-shadow-md);
+  border: 1px solid var(--app-border);
+
+  .p-card-body {
+    padding: 2.25rem 2rem;
+  }
+
+  .p-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 0;
+  }
+}
+
+.login-card__brand {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.25rem;
+
+  h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--app-text-primary);
+  }
+
+  p {
+    margin: 0;
+    color: var(--app-text-secondary);
+    font-size: 0.9rem;
+  }
+}
+
+.login-card__logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.login-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--app-text-primary);
+  }
+}
+
+.login-form__hint {
+  color: var(--app-danger);
+  font-size: 0.78rem;
+}
+
+.login-form__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.login-form__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--app-text-secondary);
+  cursor: pointer;
+}
+
+.login-card__demo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--p-primary-color) 8%, transparent);
+  color: var(--app-text-secondary);
+  font-size: 0.82rem;
+  text-align: center;
+}

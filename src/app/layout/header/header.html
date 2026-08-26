@@ -1,0 +1,35 @@
+<header class="header">
+  <div class="header__left">
+    <button type="button" class="header__menu-btn" (click)="menuToggle.emit()" aria-label="Menüyü aç/kapat">
+      <i class="pi pi-bars"></i>
+    </button>
+    <h2 class="header__title">{{ pageTitle() }}</h2>
+  </div>
+
+  <div class="header__right">
+    <button
+      type="button"
+      class="header__icon-btn"
+      (click)="notifications.toggle($event)"
+      aria-label="Bildirimler"
+    >
+      <i class="pi pi-bell"></i>
+      <span class="header__icon-dot"></span>
+    </button>
+
+    <p-popover #notifications>
+      <div class="header__empty-state">
+        <i class="pi pi-inbox"></i>
+        <p>Yeni bildiriminiz yok</p>
+      </div>
+    </p-popover>
+
+    <button type="button" class="header__user" (click)="userMenu.toggle($event)">
+      <p-avatar [label]="initials()" shape="circle" styleClass="header__avatar" />
+      <span class="header__username">{{ currentUser()?.name }}</span>
+      <i class="pi pi-angle-down"></i>
+    </button>
+
+    <p-menu #userMenu [model]="userMenuItems" [popup]="true" />
+  </div>
+</header>

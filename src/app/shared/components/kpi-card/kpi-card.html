@@ -1,0 +1,15 @@
+<div class="kpi-card" [attr.data-accent]="data().accent">
+  <div class="kpi-card__icon">
+    <i [class]="data().icon"></i>
+  </div>
+  <div class="kpi-card__body">
+    <span class="kpi-card__title">{{ data().title }}</span>
+    <span class="kpi-card__value">{{ data().value }}</span>
+    <p-tag
+      [severity]="trendSeverity()"
+      [icon]="trendIcon()"
+      [value]="data().changePercent + '%'"
+      styleClass="kpi-card__trend"
+    />
+  </div>
+</div>

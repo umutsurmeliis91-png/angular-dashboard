@@ -1,0 +1,41 @@
+<ng-template #navList>
+  <nav class="sidebar-nav">
+    @for (item of navItems; track item.label) {
+      @if (item.link) {
+        <a
+          class="sidebar-nav__item"
+          [routerLink]="item.link"
+          routerLinkActive="sidebar-nav__item--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <i [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
+        </a>
+      } @else {
+        <span class="sidebar-nav__item sidebar-nav__item--disabled">
+          <i [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
+          <span class="sidebar-nav__badge">Yakında</span>
+        </span>
+      }
+    }
+  </nav>
+</ng-template>
+
+<aside class="sidebar">
+  <div class="sidebar__brand">
+    <i class="pi pi-chart-bar"></i>
+    <span>Dashboard</span>
+  </div>
+  <ng-container [ngTemplateOutlet]="navList" />
+</aside>
+
+<p-drawer [(visible)]="mobileOpen" position="left" styleClass="sidebar-drawer" [modal]="true">
+  <ng-template #header>
+    <div class="sidebar__brand">
+      <i class="pi pi-chart-bar"></i>
+      <span>Dashboard</span>
+    </div>
+  </ng-template>
+  <ng-container [ngTemplateOutlet]="navList" />
+</p-drawer>

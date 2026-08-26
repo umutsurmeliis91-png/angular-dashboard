@@ -1,0 +1,22 @@
+:host {
+  display: contents;
+}
+
+.footer {
+  grid-area: footer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.5rem;
+  background: var(--app-surface-card);
+  border-top: 1px solid var(--app-border);
+  color: var(--app-text-secondary);
+  font-size: 0.82rem;
+
+  @media (max-width: 575px) {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.25rem;
+  }
+}

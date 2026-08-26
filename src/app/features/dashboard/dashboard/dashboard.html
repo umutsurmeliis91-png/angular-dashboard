@@ -1,0 +1,88 @@
+<div class="dashboard">
+  <div class="dashboard__intro">
+    <h1>Genel Bakış</h1>
+    <p>Hesabınızın güncel performans özeti.</p>
+  </div>
+
+  <section class="dashboard__kpis">
+    @if (kpis(); as kpiList) {
+      @for (kpi of kpiList; track kpi.title) {
+        <app-kpi-card [data]="kpi" />
+      }
+    } @else {
+      @for (i of [1, 2, 3, 4]; track i) {
+        <p-skeleton height="110px" borderRadius="12px" />
+      }
+    }
+  </section>
+
+  <section class="dashboard__charts">
+    <div class="chart-card chart-card--wide">
+      <h3>Sales Overview</h3>
+      @if (salesData(); as sales) {
+        <div class="chart-card__canvas">
+          <p-chart type="bar" [data]="sales" [options]="barOptions" />
+        </div>
+      } @else {
+        <p-skeleton height="260px" borderRadius="12px" />
+      }
+    </div>
+
+    <div class="chart-card">
+      <h3>Revenue</h3>
+      @if (revenueData(); as revenue) {
+        <div class="chart-card__canvas">
+          <p-chart type="doughnut" [data]="revenue" [options]="doughnutOptions" />
+        </div>
+      } @else {
+        <p-skeleton height="260px" borderRadius="12px" />
+      }
+    </div>
+
+    <div class="chart-card chart-card--wide">
+      <h3>User Growth</h3>
+      @if (userGrowthData(); as growth) {
+        <div class="chart-card__canvas">
+          <p-chart type="line" [data]="growth" [options]="lineOptions" />
+        </div>
+      } @else {
+        <p-skeleton height="260px" borderRadius="12px" />
+      }
+    </div>
+  </section>
+
+  <p-divider />
+
+  <section class="dashboard__activity">
+    <h3>Recent Activity</h3>
+
+    <p-table [value]="recentActivity() ?? []" [loading]="!recentActivity()" styleClass="p-datatable-sm">
+      <ng-template #header>
+        <tr>
+          <th>Kullanıcı</th>
+          <th>Aksiyon</th>
+          <th class="activity-table__time-col">Zaman</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-item>
+        <tr>
+          <td>
+            <div class="activity-table__user">
+              <span class="activity-table__icon" [attr.data-accent]="item.accent">
+                <i [class]="item.icon"></i>
+              </span>
+              <span>{{ item.user }}</span>
+            </div>
+          </td>
+          <td>{{ item.action }}</td>
+          <td class="activity-table__time-col">{{ item.time }}</td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="3" class="activity-table__empty">Henüz bir aktivite yok.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </section>
+</div>

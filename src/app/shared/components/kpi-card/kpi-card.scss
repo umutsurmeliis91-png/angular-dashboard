@@ -1,0 +1,73 @@
+:host {
+  display: block;
+}
+
+.kpi-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--app-surface-card);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow-sm);
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    box-shadow: var(--app-shadow-md);
+    transform: translateY(-2px);
+  }
+}
+
+.kpi-card__icon {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.kpi-card[data-accent='primary'] .kpi-card__icon {
+  background: var(--p-primary-color);
+}
+.kpi-card[data-accent='success'] .kpi-card__icon {
+  background: var(--app-success);
+}
+.kpi-card[data-accent='warning'] .kpi-card__icon {
+  background: var(--app-warning);
+}
+.kpi-card[data-accent='danger'] .kpi-card__icon {
+  background: var(--app-danger);
+}
+
+.kpi-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.kpi-card__title {
+  font-size: 0.82rem;
+  color: var(--app-text-secondary);
+  font-weight: 500;
+}
+
+.kpi-card__value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--app-text-primary);
+  line-height: 1.2;
+}
+
+:host ::ng-deep .kpi-card__trend {
+  width: fit-content;
+  font-size: 0.72rem;
+  margin-top: 0.15rem;
+}

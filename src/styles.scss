@@ -1,0 +1,62 @@
+// ---------------------------------------------------------------------------
+// Global styles & design tokens.
+// PrimeNG's own color scale (--p-primary-*, --p-surface-*, ...) is generated
+// by the Aura preset in app.config.ts. The variables below are app-level
+// aliases layered on top so feature code never hardcodes a color.
+// ---------------------------------------------------------------------------
+
+:root {
+  --app-bg: #f4f6fb;
+  --app-surface-card: #ffffff;
+  --app-text-primary: #1e2433;
+  --app-text-secondary: #6b7280;
+  --app-border: #e5e7eb;
+
+  --app-success: #22c55e;
+  --app-warning: #f59e0b;
+  --app-danger: #ef4444;
+
+  --app-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --app-shadow-md: 0 4px 12px rgba(16, 24, 40, 0.08);
+  --app-radius: 12px;
+}
+
+.app-dark {
+  --app-bg: #10131a;
+  --app-surface-card: #171b26;
+  --app-text-primary: #f3f4f6;
+  --app-text-secondary: #9ca3af;
+  --app-border: #262b38;
+
+  --app-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --app-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--app-bg);
+  color: var(--app-text-primary);
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}

@@ -1,0 +1,8 @@
+<div class="layout">
+  <app-header (menuToggle)="sidebarMobileOpen.set(!sidebarMobileOpen())" />
+  <app-sidebar [(mobileOpen)]="sidebarMobileOpen" />
+  <main class="layout__content">
+    <router-outlet />
+  </main>
+  <app-footer />
+</div>
