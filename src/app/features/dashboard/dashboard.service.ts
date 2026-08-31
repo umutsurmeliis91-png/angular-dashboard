@@ -1,145 +1,83 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import type { ChartData, ChartOptions } from 'chart.js';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 import { ActivityItem, KpiCardData } from '../../shared/models/dashboard.models';
 
-const MOCK_LATENCY_MS = 400;
+/** What the backend's `/api/dashboard/*` chart endpoints return — plain, chart-library-agnostic. */
+interface ChartSeriesResponse {
+  labels: string[];
+  data: number[];
+}
 
 /**
- * All dashboard data is mocked for now. Once the Spring Boot backend exists,
- * only the bodies of these methods change (e.g. `this.http.get<KpiCardData[]>(
- * `${environment.apiUrl}/dashboard/kpis`)`) — components keep calling the
- * same service methods.
+ * Talks to the Spring Boot dashboard API. The backend only knows about plain
+ * label/value series (`ChartSeriesResponse`) — wrapping that into the
+ * Chart.js-specific `ChartData` shape (colors, bar thickness, …) happens here
+ * so the backend stays free of frontend charting details.
  */
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-  getKpis(): Observable<KpiCardData[]> {
-    const kpis: KpiCardData[] = [
-      {
-        title: 'Total Users',
-        value: '1,248',
-        icon: 'pi pi-users',
-        changePercent: 8.2,
-        trend: 'up',
-        accent: 'primary',
-      },
-      {
-        title: 'Active Users',
-        value: '1,089',
-        icon: 'pi pi-user-plus',
-        changePercent: 4.6,
-        trend: 'up',
-        accent: 'success',
-      },
-      {
-        title: 'Orders',
-        value: '3,542',
-        icon: 'pi pi-shopping-cart',
-        changePercent: 2.4,
-        trend: 'down',
-        accent: 'warning',
-      },
-      {
-        title: 'Revenue',
-        value: '$48,290',
-        icon: 'pi pi-dollar',
-        changePercent: 12.1,
-        trend: 'up',
-        accent: 'danger',
-      },
-    ];
+  private readonly http = inject(HttpClient);
 
-    return of(kpis).pipe(delay(MOCK_LATENCY_MS));
+  getKpis(): Observable<KpiCardData[]> {
+    return this.http.get<KpiCardData[]>(`${environment.apiUrl}/dashboard/kpis`);
   }
 
   getSalesOverview(): Observable<ChartData<'bar'>> {
-    const data: ChartData<'bar'> = {
-      labels: ['Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu'],
-      datasets: [
-        {
-          label: 'Satışlar',
-          data: [28, 34, 31, 42, 38, 47],
-          backgroundColor: '#6366f1',
-          borderRadius: 6,
-          barThickness: 22,
-        },
-      ],
-    };
-
-    return of(data).pipe(delay(MOCK_LATENCY_MS));
+    return this.http.get<ChartSeriesResponse>(`${environment.apiUrl}/dashboard/sales-overview`).pipe(
+      map((series) => ({
+        labels: series.labels,
+        datasets: [
+          {
+            label: 'Satışlar',
+            data: series.data,
+            backgroundColor: '#6366f1',
+            borderRadius: 6,
+            barThickness: 22,
+          },
+        ],
+      })),
+    );
   }
 
   getUserGrowth(): Observable<ChartData<'line'>> {
-    const data: ChartData<'line'> = {
-      labels: ['Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu'],
-      datasets: [
-        {
-          label: 'Kullanıcılar',
-          data: [820, 902, 951, 1020, 1145, 1248],
-          fill: true,
-          tension: 0.4,
-          borderColor: '#22c55e',
-          backgroundColor: 'rgba(34, 197, 94, 0.15)',
-        },
-      ],
-    };
-
-    return of(data).pipe(delay(MOCK_LATENCY_MS));
+    return this.http.get<ChartSeriesResponse>(`${environment.apiUrl}/dashboard/user-growth`).pipe(
+      map((series) => ({
+        labels: series.labels,
+        datasets: [
+          {
+            label: 'Kullanıcılar',
+            data: series.data,
+            fill: true,
+            tension: 0.4,
+            borderColor: '#22c55e',
+            backgroundColor: 'rgba(34, 197, 94, 0.15)',
+          },
+        ],
+      })),
+    );
   }
 
   getRevenueBreakdown(): Observable<ChartData<'doughnut'>> {
-    const data: ChartData<'doughnut'> = {
-      labels: ['Abonelik', 'Tek seferlik', 'Hizmet'],
-      datasets: [
-        {
-          data: [54, 28, 18],
-          backgroundColor: ['#6366f1', '#22c55e', '#f59e0b'],
-          hoverOffset: 6,
-        },
-      ],
-    };
-
-    return of(data).pipe(delay(MOCK_LATENCY_MS));
+    return this.http.get<ChartSeriesResponse>(`${environment.apiUrl}/dashboard/revenue-breakdown`).pipe(
+      map((series) => ({
+        labels: series.labels,
+        datasets: [
+          {
+            data: series.data,
+            backgroundColor: ['#6366f1', '#22c55e', '#f59e0b'],
+            hoverOffset: 6,
+          },
+        ],
+      })),
+    );
   }
 
   getRecentActivity(): Observable<ActivityItem[]> {
-    const activity: ActivityItem[] = [
-      {
-        id: 1,
-        user: 'John Doe',
-        action: 'yeni bir sipariş oluşturdu',
-        time: '5 dakika önce',
-        icon: 'pi pi-shopping-cart',
-        accent: 'primary',
-      },
-      {
-        id: 2,
-        user: 'Jane Smith',
-        action: 'profilini güncelledi',
-        time: '22 dakika önce',
-        icon: 'pi pi-user-edit',
-        accent: 'success',
-      },
-      {
-        id: 3,
-        user: 'Admin',
-        action: 'yeni bir kullanıcı oluşturdu',
-        time: '1 saat önce',
-        icon: 'pi pi-user-plus',
-        accent: 'warning',
-      },
-      {
-        id: 4,
-        user: 'Michael Lee',
-        action: 'ödemesini tamamladı',
-        time: '3 saat önce',
-        icon: 'pi pi-check-circle',
-        accent: 'success',
-      },
-    ];
-
-    return of(activity).pipe(delay(MOCK_LATENCY_MS));
+    return this.http.get<ActivityItem[]>(`${environment.apiUrl}/dashboard/recent-activity`);
   }
 }
 

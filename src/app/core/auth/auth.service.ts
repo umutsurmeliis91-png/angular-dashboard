@@ -1,6 +1,8 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
+import { Observable, catchError, throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 import { StorageService } from '../storage/storage.service';
 import { AuthResponse, LoginCredentials, User } from './auth.models';
 
@@ -10,25 +12,9 @@ export const AUTH_STORAGE_KEYS = {
   USER: 'app_user',
 } as const;
 
-/**
- * Mock demo account. This whole block is what gets replaced by a real
- * `POST {environment.apiUrl}/auth/login` call once the Spring Boot backend
- * exists — `login()` is the only method that needs to change, everything
- * else (signals, guard, interceptor, components) stays as-is.
- */
-const DEMO_CREDENTIALS = { username: 'admin', password: 'admin123' };
-const DEMO_USER: User = {
-  id: 1,
-  username: 'admin',
-  name: 'Admin User',
-  email: 'admin@example.com',
-  roles: ['ADMIN'],
-};
-const MOCK_TOKEN = 'mock-jwt-token';
-const MOCK_LATENCY_MS = 600;
-
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: 'root' }) //Angular'a bu servisin uygulamanın root seviyesinde tek bir instance (singleton) olarak oluşturulacağını söylemek demektir.
 export class AuthService {
+  private readonly http = inject(HttpClient);
   private readonly storage = inject(StorageService);
 
   /** Restored synchronously so a page refresh never flashes the login screen. */
@@ -36,21 +22,15 @@ export class AuthService {
   readonly isAuthenticated = computed(() => this.currentUser() !== null);
 
   login(credentials: LoginCredentials): Observable<AuthResponse> {
-    const isValid =
-      credentials.username === DEMO_CREDENTIALS.username &&
-      credentials.password === DEMO_CREDENTIALS.password;
-
-    if (!isValid) {
-      return throwError(() => new Error('Kullanıcı adı veya şifre hatalı.')).pipe(
-        delay(MOCK_LATENCY_MS),
-      );
-    }
-
-    const response: AuthResponse = { token: MOCK_TOKEN, user: DEMO_USER };
-
-    return of(response).pipe(
-      delay(MOCK_LATENCY_MS),
-      tap((res) => this.persistSession(res)),
+    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/login`, credentials).pipe(
+      tap((response) => this.persistSession(response)),
+      catchError((error: HttpErrorResponse) => {
+        const message =
+          error.status === 401
+            ? 'Kullanıcı adı veya şifre hatalı.'
+            : 'Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.';
+        return throwError(() => new Error(message));
+      }),
     );
   }
 
