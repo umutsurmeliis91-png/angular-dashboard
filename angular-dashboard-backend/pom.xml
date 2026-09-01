@@ -51,6 +51,13 @@
 			<artifactId>spring-boot-starter-webmvc</artifactId>
 		</dependency>
 
+		<!-- Swagger / OpenAPI -->
+        <dependency>
+           <groupId>org.springdoc</groupId>
+           <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+           <version>3.1.0</version>
+        </dependency>
+
 		<!-- Microsoft SQL Server JDBC driver (local SQL Server Express, Windows Authentication) -->
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
